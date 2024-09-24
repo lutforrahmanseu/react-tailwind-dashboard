@@ -3,13 +3,16 @@ import { FcBullish } from "react-icons/fc";
 import { dashBoardBottomLinks, dashBoardLinks } from "../lib/Navigation";
 import SideBarLinks from "./SideBarLinks";
 import { HiOutlineLogout } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 export default function SideBar() {
   return (
     <div className="flex h-screen flex-col p-3">
-      <div className="flex px-1 py-3 items-center gap-3">
-        <FcBullish size={30} />
-        <span className="text-2xl font-bold text-white">Lutfor</span>
+      <div>
+        <Link className="flex px-1 py-3 items-center gap-3" to="/">
+          <FcBullish size={30} />
+          <span className="text-2xl font-bold text-white">Lutfor</span>
+        </Link>
       </div>
       <div className="flex-1 py-8 flex flex-col gap-0.5">
         {dashBoardLinks.map((item) => (

@@ -7,7 +7,7 @@ import SignUp from "./components/auth/SignUp";
 import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Transactions from "./pages/Transactions";
-import Messages from "./pages/Messages";
+import Messages from "./pages/Messages"; // Assuming this is the product detail page
 
 export default function App() {
   return (
@@ -20,7 +20,8 @@ export default function App() {
             <Route path="orders" element={<Orders />} />
             <Route path="customers" element={<Customers />} />
             <Route path="transactions" element={<Transactions />} />
-            <Route path="messages" element={<Messages />} />
+            {/* Dynamic route for product details */}
+            <Route path="product/:id" element={<Messages />} />
             <Route path="*" element={<div>Not Found</div>} />
           </Route>
           <Route path="/login" element={<Login />} />
