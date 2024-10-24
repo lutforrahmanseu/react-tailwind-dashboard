@@ -8,7 +8,9 @@ import Orders from "./pages/Orders";
 import Customers from "./pages/Customers";
 import Transactions from "./pages/Transactions";
 import Messages from "./pages/Messages"; // Assuming this is the product detail page
-import ProductDetails from "./components/ProductDetails";
+import ProductDetails from "./pages/ProductDetails";
+import CustomerDetails from "./pages/CustomerDetails";
+
 
 export default function App() {
   return (
@@ -23,6 +25,7 @@ export default function App() {
             <Route path="orders" element={<Orders />} />
             <Route path="customers" element={<Customers />} />
             <Route path="transactions" element={<Transactions />} />
+            <Route path="/customer/:id" element={<CustomerDetails />} />
             {/* Dynamic route for product details */}
             <Route path="messages" element={<Messages />} />
             <Route path="*" element={<div>Not Found</div>} />

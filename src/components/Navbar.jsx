@@ -4,27 +4,61 @@ import {
   HiOutlineBell,
   HiOutlineSearch,
   HiOutlineChatAlt,
+  HiOutlineMenu,
 } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 
-export default function Navbar() {
+// Dummy data for messages
+const messages = [
+  {
+    id: 1,
+    sender: "John Doe",
+    content: "Hey, how's it going?",
+    time: "5m ago",
+    unread: true,
+  },
+  {
+    id: 2,
+    sender: "Jane Smith",
+    content: "Can you review the latest design?",
+    time: "1h ago",
+    unread: false,
+  },
+  {
+    id: 3,
+    sender: "Bob Johnson",
+    content: "Meeting rescheduled to 3 PM",
+    time: "2h ago",
+    unread: true,
+  },
+];
+
+export default function Navbar({ onMenuButtonClick }) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-white h-16 px-4  flex items-center border-b border-gray-200 justify-between">
-      <div className="relative">
-        <HiOutlineSearch
-          fontSize={20}
-          className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2"
-        />
-        <input
-          type="text"
-          placeholder="Search..."
-          className="text-sm focus:outline-none active:outline-none border border-gray-300 w-[24rem] h-10 pl-11 pr-4 rounded-xl"
-        />
+    <div className="bg-white h-16 px-4 flex items-center border-b border-gray-200 justify-between">
+      <div className="flex items-center gap-4">
+        <button className="lg:hidden" onClick={onMenuButtonClick}>
+          <HiOutlineMenu fontSize={24} />
+        </button>
+        <div className="relative hidden md:block">
+          <HiOutlineSearch
+            fontSize={20}
+            className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2"
+          />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="text-sm focus:outline-none active:outline-none border border-gray-300 w-[24rem] h-10 pl-11 pr-4 rounded-xl"
+          />
+        </div>
       </div>
       <div className="flex items-center gap-2 mr-2">
+        <button className="md:hidden">
+          <HiOutlineSearch fontSize={24} />
+        </button>
         <Popover className="relative">
           {({ open }) => (
             <>
@@ -47,11 +81,38 @@ export default function Navbar() {
               >
                 <Popover.Panel className="absolute right-0 z-10 mt-2.5 transform w-80">
                   <div className="bg-white rounded-sm shadow-md ring-1 ring-black ring-opacity-5 px-2 py-2.5">
-                    <strong className="text-gray-700 font-medium">
-                      Messages
-                    </strong>
+                    <strong className="text-gray-700 font-medium">Messages</strong>
                     <div className="mt-2 py-1 text-sm">
-                      This is messages panel.
+                      {messages.map((message) => (
+                        <div
+                          key={message.id}
+                          className={`flex items-center px-4 py-3 cursor-pointer hover:bg-gray-100 ${
+                            message.unread ? "bg-blue-50" : ""
+                          }`}
+                          onClick={() => navigate("/messages")}
+                        >
+                          <div className="flex-shrink-0">
+                            <div className="h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-semibold">
+                              {message.sender.charAt(0)}
+                            </div>
+                          </div>
+                          <div className="ml-3 flex-1 overflow-hidden">
+                            <p className="text-sm font-medium text-gray-900 truncate">{message.sender}</p>
+                            <p className="text-sm text-gray-500 truncate">{message.content}</p>
+                          </div>
+                          <div className="ml-auto">
+                            <p className="text-xs text-gray-400">{message.time}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-2 pt-2 border-t border-gray-200">
+                      <button
+                        className="w-full text-sm text-blue-500 hover:text-blue-700"
+                        onClick={() => navigate("/messages")}
+                      >
+                        View all messages
+                      </button>
                     </div>
                   </div>
                 </Popover.Panel>

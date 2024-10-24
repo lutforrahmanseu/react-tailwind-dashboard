@@ -2,6 +2,7 @@ import React from "react";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { getOrderStatus } from "../lib/orderStatus";
+import { FiPackage, FiCheck, FiTruck, FiHome, FiAlertCircle } from 'react-icons/fi';
 
 const recentOrderData = [
   {
@@ -67,43 +68,59 @@ const recentOrderData = [
   },
 ];
 
+const getStatusIcon = (status) => {
+  switch (status) {
+    case 'PLACED': return <FiPackage className="mr-2" />;
+    case 'CONFIRMED': return <FiCheck className="mr-2" />;
+    case 'SHIPPED': return <FiTruck className="mr-2" />;
+    case 'OUT_FOR_DELIVERY': return <FiTruck className="mr-2" />;
+    case 'DELIVERED': return <FiHome className="mr-2" />;
+    default: return <FiAlertCircle className="mr-2" />;
+  }
+};
+
 export default function RecentOrders() {
   return (
-    <div className="bg-white px-4 pt-3 pb-4  rounded-sm border border-gray-200 flex-1">
+    <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
       <strong className="text-gray-700 font-medium">Recent Orders</strong>
-      <div className="border-x border-gray-200 rounded-sm mt-3">
-        <table className="w-full  text-gray-700">
+      <div className="mt-3">
+        <table className="w-full text-gray-700">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Product ID</th>
-              <th>Customer Name</th>
-              <th>Order Date</th>
-              <th>Order Total</th>
-              <th>Shipping Address</th>
-              <th>Order Status</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">ID</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">Product ID</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">Customer Name</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">Order Date</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">Order Total</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">Shipping Address</th>
+              <th className="py-2 px-4 bg-gray-100 text-left">Order Status</th>
             </tr>
           </thead>
           <tbody>
             {recentOrderData.map((order) => (
-              <tr key={order.id}>
-                <td>
-                  <Link to={`/order/${order.id}`}>#{order.id}</Link>
+              <tr key={order.id} className="border-b border-gray-200 hover:bg-gray-50">
+                <td className="py-2 px-4">
+                  <Link to={`/order/${order.id}`} className="text-blue-500 hover:text-blue-600">#{order.id}</Link>
                 </td>
-                <td>
-                  <Link to={`/product/${order.product_id}`}>
+                <td className="py-2 px-4">
+                  <Link to={`/product/${order.product_id}`} className="text-blue-500 hover:text-blue-600">
                     #{order.product_id}
                   </Link>
                 </td>
-                <td>
-                  <Link to={`/customer/${order.customer_id}`}>
+                <td className="py-2 px-4">
+                  <Link to={`/customer/${order.customer_id}`} className="text-blue-500 hover:text-blue-600">
                     {order.customer_name}
                   </Link>
                 </td>
-                <td>{format(new Date(order.order_date), "dd MMM yyyy")}</td>
-                <td>{order.order_total}</td>
-                <td>{order.shipment_address}</td>
-                <td>{getOrderStatus(order.current_order_status)}</td>
+                <td className="py-2 px-4">{format(new Date(order.order_date), "dd MMM yyyy")}</td>
+                <td className="py-2 px-4">{order.order_total}</td>
+                <td className="py-2 px-4">{order.shipment_address}</td>
+                <td className="py-2 px-4">
+                  <span className={`px-2 py-1 rounded-full text-xs flex items-center w-fit ${getOrderStatus(order.current_order_status).color}`}>
+                    {getStatusIcon(order.current_order_status)}
+                    {getOrderStatus(order.current_order_status).text}
+                  </span>
+                </td>
               </tr>
             ))}
           </tbody>
